@@ -1,0 +1,16 @@
+.header {
+  grid-area: h;
+  background-color: #07B568;
+}
+
+.header img {
+  width: 3em ;
+  margin-top: .6em;
+}
+
+.header .logo {
+
+  height: 100%;
+  width: 9%;
+  text-align: center;
+}
