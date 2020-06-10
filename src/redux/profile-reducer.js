@@ -1,5 +1,5 @@
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+const ADD_POST = 'ADD-POST'; 														// добавление поста
+const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';		// изменение набираемого в текущий момент текста
 
 let initialState = {
 	posts: [
@@ -18,19 +18,18 @@ const profileReducer = (state = initialState, action) => {		//initialState по 
 				likesCount: 0
 			};
 			
-			let stateCopy = {...state};
-			stateCopy.posts = [...state.posts];
-			stateCopy.posts.push(newPost);
-			stateCopy.newPostText = '';
-
-			return stateCopy;
+			return {
+				...state,
+				posts: [...state.posts, newPost],			// копируем посты, push newPost
+				newPostText: ''
+			};
 		}
 
 		case UPDATE_NEW_POST_TEXT: {
-		let	stateCopy = {...state};
-			stateCopy.newPostText = action.newText;
-
-			return stateCopy;
+			return {
+				...state,
+				newPostText: action.newText
+			};
 		}
 
 		default:
