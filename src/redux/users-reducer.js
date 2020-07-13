@@ -1,11 +1,14 @@
 const FOLLOW = 'FOLLOW'; 														// добавление поста
 const UNFOLLOW = 'UNFOLLOW';		// изменение набираемого в текущий момент текста
 const SET_USERS = 'SET_USERS';
+const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
 
 let initialState = {
-	users: [
-		
-	]
+	users: [],
+	pageSize: 5,
+	usersTotalCount: 0,
+	currentPage: 2
 };
 
 const usersReducer = (state = initialState, action) => {		//initialState по умолчанию
@@ -34,7 +37,15 @@ const usersReducer = (state = initialState, action) => {		//initialState по у
 			}
 
 		case SET_USERS: {
-			return {...state, users: [ ...state.users, ...action.users ]} // users: склеиваем копию старого state.users и users из action, т.е. добавляем
+			return {...state, users: action.users} // users: склеиваем копию старого state.users и users из action, т.е. добавляем
+		}
+
+		case SET_CURRENT_PAGE: {
+			return {...state, currentPage: action.currentPage} // создаём объект и меняем currentPage на тот, который сидит в action. Его диспатчим из компоненты Users
+		}
+
+		case SET_TOTAL_USERS_COUNT: {
+			return {...state, usersTotalCount: action.count} // создаём объект и меняем currentPage на тот, который сидит в action. Его диспатчим из компоненты Users
 		}
 
 
@@ -44,11 +55,17 @@ const usersReducer = (state = initialState, action) => {		//initialState по у
 	
 }
 
+
+// action-creators
 export const followAC = (userId) => ({ type: FOLLOW, userId });
 
 export const unfollowAC = (userId) => ({ type: UNFOLLOW, userId });
 
 export const setUsersAC = (users) => ({ type: SET_USERS, users });		// для взятия users с сервера и set в state
+
+export const setCurrentPageAC = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
+
+export const setUsersTotalCountAC = (totalUsersCount) => ({ type: SET_TOTAL_USERS_COUNT, count: totalUsersCount });
 
 export default usersReducer;
 
