@@ -6,3 +6,15 @@
 .selectedPage {
 	font-weight: bold;
 }
+
+.pageNum {
+	width: 80vw;
+
+}
+
+.preloader {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 20%;
+}

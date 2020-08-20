@@ -1,8 +1,11 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {followAC, unfollowAC, setUsersAC, setCurrentPageAC, setUsersTotalCountAC} from '../../redux/users-reducer.js'
+import {followAC, unfollowAC, setUsersAC, setCurrentPageAC, setUsersTotalCountAC, toggleIsFetchingAC} from '../../redux/users-reducer.js'
 import axios from 'axios';
 import Users from './Users';
+import preloader from './../../assets/images/Rolling-1s-200px.svg';
+import s from './users.module.css';
+import Preloader from '../common/preloader/prelaoder';
 
 class UsersContainer extends React.Component {
 	// constructor (props) {
@@ -10,8 +13,10 @@ class UsersContainer extends React.Component {
 	// }
 
 	componentDidMount() {
+		this.props.toggleIsFetching(true);
 		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
 			.then(response => {
+				this.props.toggleIsFetching(false);
 				this.props.setUsers(response.data.items);
 				this.props.setTotalUsersCount(response.data.totalCount);
 			});
@@ -19,8 +24,10 @@ class UsersContainer extends React.Component {
 
 	onPageChanged = (pageNumber) => {
 		this.props.setCurrentPage(pageNumber);
+		this.props.toggleIsFetching(true);
 		axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}&count=${this.props.pageSize}`)
 			.then(response => {
+				this.props.toggleIsFetching(false);
 				this.props.setUsers(response.data.items);
 			});
 	}
@@ -28,23 +35,28 @@ class UsersContainer extends React.Component {
 	render() {
 		
 
-		return <Users usersTotalCount = {this.props.usersTotalCount}
+		return <>
+			{ this.props.isFetching ? <Preloader/>: null }
+				<Users 		usersTotalCount = {this.props.usersTotalCount}
 									pageSize = {this.props.pageSize}
 									currentPage = {this.props.currentPage}
 									onPageChanged = {this.onPageChanged}
 									users = {this.props.users}
 									follow = {this.props.follow}
-									unfollow = {this.props.unfollow}/> 
+									unfollow = {this.props.unfollow}
+				/> 
+			</>
 	}
 }
 
 
 let mapStateToProps = (state) => {			// функция принимает глобальный state целиком
-	return {															// возвращает объект с теми данными, которые на данный момент
+	return {															// передаёт в usersContainer через connect				
 		users: state.usersPage.users,
 		pageSize: state.usersPage.pageSize,
 		usersTotalCount: state.usersPage.usersTotalCount,
-		currentPage: state.usersPage.currentPage
+		currentPage: state.usersPage.currentPage,
+		isFetching: state.usersPage.isFetching
 	}
 }
 
@@ -57,13 +69,16 @@ let mapDispatchToProps = (dispatch) => {  // функция для переда�
 			dispatch(unfollowAC(userId));
 		},
 		setUsers: (users) => {
-			dispatch(setUsersAC(users))
+			dispatch(setUsersAC(users));
 		},
 		setCurrentPage: (pageNumber) => {
-			dispatch(setCurrentPageAC(pageNumber))
+			dispatch(setCurrentPageAC(pageNumber));
 		},
 		setTotalUsersCount: (totalCount) => {
-			dispatch(setUsersTotalCountAC(totalCount))
+			dispatch(setUsersTotalCountAC(totalCount));
+		},
+		toggleIsFetching: (isFetching) => {
+			dispatch(toggleIsFetchingAC(isFetching));
 		}
 	}
 }

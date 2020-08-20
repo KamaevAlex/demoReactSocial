@@ -3,12 +3,14 @@ const UNFOLLOW = 'UNFOLLOW';		// изменение набираемого в т
 const SET_USERS = 'SET_USERS';
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT';
+const TOGGLE_IS_FETCHING = 'TOGGLE_IS_FETCHING';
 
 let initialState = {
 	users: [],
 	pageSize: 5,
 	usersTotalCount: 0,
-	currentPage: 1
+	currentPage: 1,
+	isFetching: false
 };
 
 const usersReducer = (state = initialState, action) => {		//initialState по умолчанию
@@ -45,7 +47,11 @@ const usersReducer = (state = initialState, action) => {		//initialState по у
 		}
 
 		case SET_TOTAL_USERS_COUNT: {
-			return {...state, usersTotalCount: action.count} // создаём объект и меняем currentPage на тот, который сидит в action. Его диспатчим из компоненты Users
+			return {...state, usersTotalCount: action.count} 
+		}
+
+		case TOGGLE_IS_FETCHING: {
+			return {...state, isFetching: action.isFetching} 
 		}
 
 
@@ -66,6 +72,8 @@ export const setUsersAC = (users) => ({ type: SET_USERS, users });		// для в
 export const setCurrentPageAC = (currentPage) => ({ type: SET_CURRENT_PAGE, currentPage });
 
 export const setUsersTotalCountAC = (totalUsersCount) => ({ type: SET_TOTAL_USERS_COUNT, count: totalUsersCount });
+
+export const toggleIsFetchingAC = (isFetching) => ({ type: TOGGLE_IS_FETCHING, isFetching })
 
 export default usersReducer;
 

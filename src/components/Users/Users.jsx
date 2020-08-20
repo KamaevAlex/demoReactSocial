@@ -12,10 +12,10 @@ let Users = (props) => {
 		}
 
 	return <div>
-	<div>
+	<div className = {s.pageNum}>
 		{pages.map( p => {
 			return <span 	className = {props.currentPage === p ? s.selectedPage:undefined}
-										onClick={ (e) => {props.onPageChanged(p)} }>{p}</span> // 55 34:30		setCurrentPage делаем в mapDispatchToProps
+										onClick={ (e) => {props.onPageChanged(p)} }>{p} </span> // 55 34:30		setCurrentPage делаем в mapDispatchToProps
 			})}
 
 	</div>
