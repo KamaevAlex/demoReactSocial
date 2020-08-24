@@ -1,11 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {followAC, unfollowAC, setUsersAC, setCurrentPageAC, setUsersTotalCountAC, toggleIsFetchingAC} from '../../redux/users-reducer.js'
+import {follow, unfollow, setUsers, setCurrentPage, setTotalUsersCount, toggleIsFetching} from '../../redux/users-reducer.js'
 import axios from 'axios';
 import Users from './Users';
-import preloader from './../../assets/images/Rolling-1s-200px.svg';
 import s from './users.module.css';
-import Preloader from '../common/preloader/prelaoder';
+import Preloader from '../common/preloader/preloader';
 
 class UsersContainer extends React.Component {
 	// constructor (props) {
@@ -37,13 +36,13 @@ class UsersContainer extends React.Component {
 
 		return <>
 			{ this.props.isFetching ? <Preloader/>: null }
-				<Users 		usersTotalCount = {this.props.usersTotalCount}
-									pageSize = {this.props.pageSize}
-									currentPage = {this.props.currentPage}
-									onPageChanged = {this.onPageChanged}
-									users = {this.props.users}
-									follow = {this.props.follow}
-									unfollow = {this.props.unfollow}
+				<Users 			usersTotalCount = {this.props.usersTotalCount}
+							  	pageSize = {this.props.pageSize}
+							  	currentPage = {this.props.currentPage}
+							  	onPageChanged = {this.onPageChanged}
+							  	users = {this.props.users}
+							  	follow = {this.props.follow}
+							  	unfollow = {this.props.unfollow}
 				/> 
 			</>
 	}
@@ -60,27 +59,34 @@ let mapStateToProps = (state) => {			// функция принимает гло
 	}
 }
 
-let mapDispatchToProps = (dispatch) => {  // функция для передачи презентационной компоненте callback-ов через props, которые презент. компонента может вызывать
-	return {																// возвращаем объект
-		follow: (userId) => {									// функция-callback follow и подобные будет dispatch-ить action creator
-			dispatch(followAC(userId));
-		},
-		unfollow: (userId) => {
-			dispatch(unfollowAC(userId));
-		},
-		setUsers: (users) => {
-			dispatch(setUsersAC(users));
-		},
-		setCurrentPage: (pageNumber) => {
-			dispatch(setCurrentPageAC(pageNumber));
-		},
-		setTotalUsersCount: (totalCount) => {
-			dispatch(setUsersTotalCountAC(totalCount));
-		},
-		toggleIsFetching: (isFetching) => {
-			dispatch(toggleIsFetchingAC(isFetching));
-		}
-	}
-}
+// let mapDispatchToProps = (dispatch) => {  // функция для передачи презентационной компоненте callback-ов через props, которые презент. компонента может вызывать
+// 	return {										// возвращаем объект
+// 		follow: (userId) => {						// функция-callback follow и подобные будет dispatch-ить action creator
+// 			dispatch(followAC(userId));
+// 		},
+// 		unfollow: (userId) => {
+// 			dispatch(unfollowAC(userId));
+// 		},
+// 		setUsers: (users) => {
+// 			dispatch(setUsersAC(users));
+// 		},
+// 		setCurrentPage: (pageNumber) => {
+// 			dispatch(setCurrentPageAC(pageNumber));
+// 		},
+// 		setTotalUsersCount: (totalCount) => {
+// 			dispatch(setUsersTotalCountAC(totalCount));
+// 		},
+// 		toggleIsFetching: (isFetching) => {
+// 			dispatch(toggleIsFetchingAC(isFetching));
+// 		}
+// 	}
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps) (UsersContainer); // создаём контейнерную компоненту с помощью connect из react-redux
+export default connect(mapStateToProps, {
+	follow,		// сокр. от follow: follow    (это action creator)
+	unfollow,
+	setUsers,
+	setCurrentPage,
+	setTotalUsersCount,
+	toggleIsFetching
+}) (UsersContainer); // создаём контейнерную компоненту с помощью connect из react-redux
