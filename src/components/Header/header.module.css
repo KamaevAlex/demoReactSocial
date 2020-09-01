@@ -6,12 +6,17 @@
 .header img {
   width: 3em ;
   margin-top: .6em;
+  margin-left: 20px;
 }
 
-.header .logo {
 
-  height: 100%;
-  width: 9%;
-  margin-left: 25px;
+.loginBlock {
+  float: right;
+  margin-right: 10px;
+  margin-top: 10px;
 
+}
+
+.loginBlock a {
+  color: white;
 }
